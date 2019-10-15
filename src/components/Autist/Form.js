@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 
 import Grid from '../../templates/Grid'
@@ -9,14 +9,42 @@ import Row from '../../templates/Row'
 import Button from '../../templates/Button'
 
 import { getCaregiver } from '../../services/caregiver'
-import { addAutist } from '../../services/autist'
+import { addAutist, updateAutist, findAutist } from '../../services/autist'
 
-export default function() {
+export default function({
+  match: {
+    params: { id }
+  },
+  history
+}) {
   const [caregiver, setCaregiver] = useState(null)
   const [formValues, setFormValues] = useState({
     name: '',
     caregiver: ''
   })
+
+  useEffect(() => {
+    const fetchAutist = async () => {
+      const {
+        name,
+        responsible: { email: caregiverEmail }
+      } = await findAutist(id)
+
+      const caregiver = await getCaregiver(caregiverEmail)
+
+      const formValues = {
+        name,
+        caregiver: caregiverEmail
+      }
+
+      setFormValues(formValues)
+      setCaregiver(caregiver)
+    }
+
+    if (id) {
+      fetchAutist()
+    }
+  }, [id])
 
   const handleChange = e => {
     const { name, value } = _.get(e, 'target', {})
@@ -35,12 +63,18 @@ export default function() {
     }
 
     try {
-      await addAutist(data)
-    } catch (e) {
-        const errors = _.get(e, 'response.data.errors', []).join('\n')
-        const message = `Existem alguns erros nos dados inseridos:\n${errors}`
+      if (id) {
+        await updateAutist(id, data)
+      } else {
+        await addAutist(data)
+      }
 
-        alert(message)
+      history.push('/autists')
+    } catch (e) {
+      const errors = _.get(e, 'response.data.errors', []).join('\n')
+      const message = `Existem alguns erros nos dados inseridos:\n${errors}`
+
+      alert(message)
     }
   }
 
@@ -82,7 +116,7 @@ export default function() {
           </Row>
           <FormGroup>
             <Button type="submit" primary>
-              Adicionar
+              {id ? 'Alterar' : 'Adicionar'}
             </Button>
           </FormGroup>
         </Form>
