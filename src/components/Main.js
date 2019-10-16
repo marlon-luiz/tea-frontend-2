@@ -10,10 +10,10 @@ import Grid from '../templates/Grid'
 import Card from '../templates/Card'
 import Row from '../templates/Row'
 
-export default () => (
+export default ({ history }) => (
   <Container>
     <Navigation />
-    <Header />
+    <Header history={history} />
     <main>
       <Grid>
         <Card>

@@ -11,28 +11,34 @@ import Select from '../templates/Select'
 
 import ActivityList from './Activity/List'
 
-export default function() {
+export default function({ location: { state } }) {
   const [autists, setAutists] = useState([])
-  const [autistId, setAutistId] = useState(undefined)
+  const [autistId, setAutistId] = useState(_.get(state, 'autistId', ''))
 
   useEffect(() => {
-    getAutists()
-      .then(autists => {
-        setAutists(autists)
+    const fetchAutists = async () => {
+      const autists = await getAutists()
 
-        if (autists[0]) {
-          setAutistId(autists[0].id)
-        }
-      })
-      .catch(window.console.log)
-  }, [])
+      setAutists(autists)
+
+      if (!autistId && autists[0]) {
+        setAutistId(autists[0].id)
+      }
+    }
+
+    fetchAutists()
+  }, [autistId])
 
   return (
     <>
       <FormGroup>
         <Row>
           <Grid md={4}>
-            <Select label="Autista" onChange={e => setAutistId(e.target.value)}>
+            <Select
+              label="Autista"
+              value={autistId}
+              onChange={e => setAutistId(e.target.value)}
+            >
               {_.map(autists, autist => (
                 <option value={autist.id} key={autist.id}>
                   {autist.name}
@@ -43,13 +49,20 @@ export default function() {
         </Row>
       </FormGroup>
 
-      <Grid>
-        <Row>
+      <Row>
+        <Grid>
           <ActivityList autistId={autistId} />
-        </Row>
-      </Grid>
+        </Grid>
+      </Row>
 
-      <Button to="/activity/add" />
+      <Button
+        to={{
+          pathname: '/activities/add',
+          state: {
+            autistId
+          }
+        }}
+      />
     </>
   )
 }

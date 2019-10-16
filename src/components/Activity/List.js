@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 
-import { getActivities } from '../../services/activity'
+import { getActivities, deleteActivity } from '../../services/activity'
 
 import List from '../../templates/List'
 import IconButton from '../../templates/IconButton'
@@ -21,6 +21,18 @@ export default function({ autistId }) {
 
     fetchActivities()
   }, [autistId])
+
+  const handleDelete = async activityId => {
+    if (window.confirm('Tem certeza que deseja excluir esta atividade?')) {
+      await deleteActivity(activityId)
+
+      if (autistId) {
+        const data = await getActivities(autistId)
+
+        setActivities(data)
+      }
+    }
+  }
 
   return (
     <List centerColumns={[4, 5, 6]}>
@@ -44,7 +56,11 @@ export default function({ autistId }) {
                 icon="pencil-alt"
                 to={`/activities/${activity.id}`}
               />
-              <IconButton error icon="trash" />
+              <IconButton
+                error
+                icon="trash"
+                onClick={async () => await handleDelete(activity.id)}
+              />
             </td>
             <td>{activity.title}</td>
             <td>{activity.description}</td>

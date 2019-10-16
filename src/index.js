@@ -7,13 +7,22 @@ import {
   faCalendarAlt,
   faPencilAlt,
   faPlus,
+  faSignOutAlt,
   faTrash,
   faUser
 } from '@fortawesome/free-solid-svg-icons'
 
 import App from './App'
 
-library.add(far, faCalendarAlt, faPencilAlt, faPlus, faTrash, faUser)
+library.add(
+  far,
+  faCalendarAlt,
+  faPencilAlt,
+  faPlus,
+  faSignOutAlt,
+  faTrash,
+  faUser
+)
 
 const appKey = base64.encode('tea-routine')
 
