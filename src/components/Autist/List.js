@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 
-import { getAutists } from '../../services/autist'
+import { getAutists, deleteAutist } from '../../services/autist'
 
 import List from '../../templates/List'
 import Button from '../../templates/FloatingActionButton'
@@ -19,6 +19,15 @@ export default function() {
 
     fetchAutists()
   }, [])
+
+  const handleDelete = async autistId => {
+    if (window.confirm('Tem certeza que deseja excluir este autista?')) {
+      await deleteAutist(autistId)
+
+      const data = await getAutists()
+      setAustists(data)
+    }
+  }
 
   return (
     <>
@@ -40,7 +49,11 @@ export default function() {
                   icon="pencil-alt"
                   to={`/autists/${autist.id}`}
                 />
-                <IconButton error icon="trash" />
+                <IconButton
+                  error
+                  icon="trash"
+                  onClick={async () => handleDelete(autist.id)}
+                />
               </td>
               <td>{autist.name}</td>
               <td>{autist.responsible.name}</td>
