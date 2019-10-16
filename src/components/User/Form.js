@@ -11,7 +11,7 @@ import Button from '../../templates/Button'
 import { addUser } from '../../services/user'
 import Card from '../../templates/Card'
 
-export default function() {
+export default function({ history }) {
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
@@ -23,8 +23,11 @@ export default function() {
   const handleChange = e => {
     const { name, value } = _.get(e, 'target', {})
 
+    console.log(name, value)
+
     setFormValues({ ...formValues, [name]: value })
   }
+
   const handleSubmit = async () => {
     const data = {
       name: formValues.name,
@@ -36,6 +39,9 @@ export default function() {
 
     try {
       await addUser(data)
+
+      window.alert('Usuário criado com sucesso!')
+      history.push('/login')
     } catch (e) {
       const { message, errors } = _.get(e, 'response.data', {})
 
@@ -118,8 +124,8 @@ export default function() {
                         <input
                           type="radio"
                           name="usertype"
-                          value={formValues.usertype}
-                          checked={true}
+                          value="C"
+                          checked={formValues.usertype === 'C'}
                           onChange={handleChange}
                         />
                         Cuidador
@@ -127,7 +133,8 @@ export default function() {
                         <input
                           type="radio"
                           name="usertype"
-                          value={formValues.usertype}
+                          value="A"
+                          checked={formValues.usertype === 'A'}
                           onChange={handleChange}
                         />
                         Administrador
