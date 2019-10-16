@@ -72,7 +72,7 @@ export default function({ history }) {
           </FormGroup>
           <Button>Login</Button>
           <TextBottom>
-            Não tem uma conta? <Link>Crie uma!</Link>
+            Não tem uma conta? <Link to="/users/add">Crie uma!</Link>
           </TextBottom>
         </Form>
       </Content>
