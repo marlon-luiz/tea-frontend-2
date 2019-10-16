@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import { getTheme } from '../../theme'
+import { getTheme } from "../../theme";
 
 const Header = styled.header`
   background-color: #ffffff;
@@ -18,7 +18,7 @@ const Header = styled.header`
   }
 
   button {
-    color: ${getTheme('primaryColor')};
+    color: ${getTheme("primaryColor")};
     border: none;
     background: none;
     font-size: 1.2rem;
@@ -31,8 +31,9 @@ const Header = styled.header`
 
     svg {
       margin-left: 6px;
+      margin-right: 6px;
     }
   }
-`
+`;
 
-export { Header }
+export { Header };
