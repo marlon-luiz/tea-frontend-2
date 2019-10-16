@@ -13,6 +13,11 @@ import { addUser } from '../../services/user'
 export default function() {
   const [formValues, setFormValues] = useState({
     name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    usertype: ''
+
   })
 
   const handleChange = e => {
@@ -22,7 +27,11 @@ export default function() {
   }
   const handleSubmit = async () => {
     const data = {
-      name: formValues.name
+      name: formValues.name,
+      email: formValues.email,
+      password: formValues.password,
+      passwordConfirmation: formValues.passwordConfirmation,
+      type: formValues.usertype,
     }
 
     try {
@@ -59,7 +68,7 @@ export default function() {
                   inline
                   name="email"
                   label="E-mail"
-                  value={formValues.name}
+                  value={formValues.email}
                   onChange={handleChange}
                 />
               </FormGroup>
@@ -93,21 +102,18 @@ export default function() {
             <Grid>
                 <FormGroup>Tipo de Usuário
                 <br></br>
-                Cuidador
-                <Input type="radio"
-                    inline
+                <input type="radio"
                     name="usertype"
                     value={formValues.usertype}
                     checked={true}
                     onChange={handleChange}
-                  />
-                  Administrador
-                  <Input type="radio"
-                    inline
+                  />Cuidador
+                  <br></br>                  
+                  <input type="radio"
                     name="usertype"
                     value={formValues.usertype}
                     onChange={handleChange}
-                  />
+                  />Administrador
                 </FormGroup>
               </Grid>
           </Row>
