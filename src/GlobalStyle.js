@@ -3,7 +3,8 @@ import { createGlobalStyle } from 'styled-components'
 import { getTheme } from './theme'
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swappoppins');
+  @import url('https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,500&display=swap');
+
   :root {
     font-size: ${getTheme('fontSize')}px;
   }

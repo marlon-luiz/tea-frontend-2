@@ -10,9 +10,12 @@ import UserForm from './components/User/Form'
 export default () => (
   <Switch>
     <Route path="/" exact component={Home} />
-    <Route path="/activity/add" component={ActivityForm} />
-    <Route path="/autist/add" component={AutistForm} />
-    <Route path="/autist" component={AutistList} />
+    <Route
+      path={['/activities/add', '/activities/:id']}
+      component={ActivityForm}
+    />
+    <Route path={['/autists/add', '/autists/:id']} component={AutistForm} />
+    <Route path="/autists" component={AutistList} />
     <Route path="/user/add" component={UserForm} />
     <Redirect to="/" />
   </Switch>

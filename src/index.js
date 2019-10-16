@@ -2,21 +2,27 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import base64 from 'base-64'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import {
+  faCalendarAlt,
+  faPencilAlt,
+  faPlus,
+  faTrash,
+  faUser
+} from '@fortawesome/free-solid-svg-icons'
 
 import App from './App'
 
-library.add(faPlus)
+library.add(far, faCalendarAlt, faPencilAlt, faPlus, faTrash, faUser)
 
 const appKey = base64.encode('tea-routine')
 
 if (!window.hasOwnProperty('user'))
   Object.defineProperty(window, 'user', {
     get() {
-      // const encoded = window.localStorage.getItem(appKey)
+      const encoded = window.localStorage.getItem(appKey)
 
-      // return encoded ? JSON.parse(base64.decode(encoded)) : null
-      return { id: 1 }
+      return encoded ? JSON.parse(base64.decode(encoded)) : null
     },
     set(value) {
       if (value === null) {

@@ -2,26 +2,36 @@ import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 
-import Grid from '../../../templates/Grid'
-import Form from '../../../templates/Form'
-import FormGroup from '../../../templates/FormGroup'
-import Input from '../../../templates/Input'
-import Row from '../../../templates/Row'
-import Select from '../../../templates/Select'
-import Textarea from '../../../templates/Textarea'
+import Grid from '../../templates/Grid'
+import Form from '../../templates/Form'
+import FormGroup from '../../templates/FormGroup'
+import Input from '../../templates/Input'
+import Row from '../../templates/Row'
+import Select from '../../templates/Select'
+import Textarea from '../../templates/Textarea'
 
-import { getAutists } from '../../../services/autist'
-import { addActivity } from '../../../services/activity'
-import Button from '../../../templates/Button'
+import { getAutists } from '../../services/autist'
+import {
+  findActivity,
+  addActivity,
+  updateActivity
+} from '../../services/activity'
+import Button from '../../templates/Button'
 
-export default () => {
+export default ({
+  match: {
+    params: { id }
+  },
+  location: { state },
+  history
+}) => {
   const start = moment(),
     end = moment()
 
   const [autists, setAustists] = useState([])
   const [formValues, setFormValues] = useState({
-    autistId: 34,
-    title: 'Teste Eduardo',
+    autistId: _.get(state, 'autistId', ''),
+    title: '',
     description: '',
     startDate: start.format('YYYY-MM-DD'),
     endDate: end.format('YYYY-MM-DD'),
@@ -30,21 +40,53 @@ export default () => {
   })
 
   useEffect(() => {
-    getAutists()
-      .then(autists => setAustists(autists))
-      .catch(window.console.log)
+    const fetchAutists = async () => {
+      const autists = await getAutists()
+      setAustists(autists)
+    }
+
+    fetchAutists()
   }, [])
+
+  useEffect(() => {
+    const fetchActivity = async () => {
+      const {
+        autistId,
+        title,
+        description,
+        start: startDate,
+        end: endDate
+      } = await findActivity(id)
+
+      const start = moment(startDate),
+        end = moment(endDate)
+
+      const formValues = {
+        autistId,
+        title,
+        description,
+        startDate: start.format('YYYY-MM-DD'),
+        endDate: end.format('YYYY-MM-DD'),
+        startTime: start.format('HH:mm'),
+        endTime: end.format('HH:mm')
+      }
+
+      setFormValues(formValues)
+    }
+
+    if (id) {
+      fetchActivity()
+    }
+  }, [id])
 
   const handleChange = e => {
     const { name, value } = _.get(e, 'target', {})
-    console.log(name, value)
 
     setFormValues({ ...formValues, [name]: value })
   }
 
   const validate = () => {
     const errors = []
-    console.log(formValues)
 
     if (isNaN(formValues.autistId)) {
       errors.push('Informe o autista')
@@ -105,7 +147,13 @@ export default () => {
       values = { ...formValues, start: start.toDate(), end: end.toDate() }
 
       try {
-        await addActivity(values)
+        if (id) {
+          await updateActivity(id, values)
+        } else {
+          await addActivity(values)
+        }
+
+        history.push('/', { autistId: values.autistId })
       } catch (e) {
         const errors = _.get(e, 'response.data.errors', []).join('\n')
         const message = `Existem alguns erros nos dados inseridos:\n${errors}`
@@ -221,7 +269,7 @@ export default () => {
             <Grid>
               <FormGroup>
                 <Button type="submit" primary>
-                  Adicionar
+                  {id ? 'Alterar' : 'Adicionar'}
                 </Button>
               </FormGroup>
             </Grid>
