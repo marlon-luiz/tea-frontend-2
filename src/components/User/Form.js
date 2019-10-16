@@ -1,37 +1,37 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
-import _ from "lodash";
+import React, { useState } from 'react'
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import _ from 'lodash'
 
-import Grid from "../../templates/Grid";
-import Form from "../../templates/Form";
-import FormGroup from "../../templates/FormGroup";
-import Input from "../../templates/Input";
-import Row from "../../templates/Row";
-import Button from "../../templates/Button";
+import Grid from '../../templates/Grid'
+import Form from '../../templates/Form'
+import FormGroup from '../../templates/FormGroup'
+import Input from '../../templates/Input'
+import Row from '../../templates/Row'
+import Button from '../../templates/Button'
 
-import { addUser } from "../../services/user";
-import Card from "../../templates/Card";
+import { addUser } from '../../services/user'
+import Card from '../../templates/Card'
 
-import { Header } from "../../templates/Header/styles";
+import { Header } from '../../templates/Header/styles'
 
 export default function({ history }) {
   const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    usertype: ""
-  });
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    usertype: ''
+  })
 
   const handleChange = e => {
-    const { name, value } = _.get(e, "target", {});
+    const { name, value } = _.get(e, 'target', {})
 
-    setFormValues({ ...formValues, [name]: value });
-  };
+    setFormValues({ ...formValues, [name]: value })
+  }
 
   const handleBack = () => {
-    history.push("/login");
-  };
+    history.push('/login')
+  }
 
   const handleSubmit = async () => {
     const data = {
@@ -40,23 +40,23 @@ export default function({ history }) {
       password: formValues.password,
       passwordConfirmation: formValues.passwordConfirmation,
       type: formValues.usertype
-    };
+    }
 
     try {
-      await addUser(data);
+      await addUser(data)
     } catch (e) {
-      const { message, errors } = _.get(e, "response.data", {});
+      const { message, errors } = _.get(e, 'response.data', {})
 
       if (!_.isEmpty(errors)) {
-        const errors = _.get(e, "response.data.errors", []).join("\n");
-        const message = `Existem alguns erros nos dados inseridos:\n${errors}`;
+        const errors = _.get(e, 'response.data.errors', []).join('\n')
+        const message = `Existem alguns erros nos dados inseridos:\n${errors}`
 
-        alert(message);
+        alert(message)
       } else {
-        alert(message);
+        alert(message)
       }
     }
-  };
+  }
 
   return (
     <Grid>
@@ -159,5 +159,5 @@ export default function({ history }) {
         </Row>
       </Card>
     </Grid>
-  );
+  )
 }
