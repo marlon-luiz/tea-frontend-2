@@ -8,7 +8,8 @@ import { Navigation } from './styles'
 export default function() {
   const items = [
     { to: '/', icon: 'calendar-alt', iconStyle: 'far', text: 'Atividades' },
-    { to: '/autists', icon: 'user', text: 'Autistas' }
+    { to: '/autists', icon: 'user', text: 'Autistas' },
+    { to: '/report', icon: 'book', text: 'Relatório' }
   ]
 
   return (

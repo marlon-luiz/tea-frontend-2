@@ -5,6 +5,7 @@ import Home from './components/Home'
 import ActivityForm from './components/Activity/Form'
 import AutistForm from './components/Autist/Form'
 import AutistList from './components/Autist/List'
+import AdminReport from './components/Report/List'
 
 export default () => (
   <Switch>
@@ -15,6 +16,7 @@ export default () => (
     />
     <Route path={['/autists/add', '/autists/:id']} component={AutistForm} />
     <Route path="/autists" component={AutistList} />
+    <Route path="/report" component={AdminReport} />
     <Redirect to="/" />
   </Switch>
 )

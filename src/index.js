@@ -9,7 +9,9 @@ import {
   faPlus,
   faSignOutAlt,
   faTrash,
-  faUser
+  faUser,
+  faArrowCircleLeft,
+  faBook
 } from '@fortawesome/free-solid-svg-icons'
 
 import App from './App'
@@ -21,7 +23,9 @@ library.add(
   faPlus,
   faSignOutAlt,
   faTrash,
-  faUser
+  faUser,
+  faArrowCircleLeft,
+  faBook
 )
 
 const appKey = base64.encode('tea-routine')

@@ -31,6 +31,7 @@ const Header = styled.header`
 
     svg {
       margin-left: 6px;
+      margin-right: 6px;
     }
   }
 `

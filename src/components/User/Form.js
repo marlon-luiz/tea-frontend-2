@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 
 import Grid from '../../templates/Grid'
@@ -10,6 +11,8 @@ import Button from '../../templates/Button'
 
 import { addUser } from '../../services/user'
 import Card from '../../templates/Card'
+
+import { Header } from '../../templates/Header/styles'
 
 export default function({ history }) {
   const [formValues, setFormValues] = useState({
@@ -26,6 +29,10 @@ export default function({ history }) {
     console.log(name, value)
 
     setFormValues({ ...formValues, [name]: value })
+  }
+
+  const handleBack = () => {
+    history.push('/login')
   }
 
   const handleSubmit = async () => {
@@ -62,6 +69,12 @@ export default function({ history }) {
         <Row>
           <Grid>
             <Row>
+              <Header>
+                <button onClick={handleBack}>
+                  <Icon icon="arrow-circle-left" />
+                  Home
+                </button>
+              </Header>
               <Grid lg={8} pushLg={2}>
                 <Form onSubmit={handleSubmit}>
                   <Row>
