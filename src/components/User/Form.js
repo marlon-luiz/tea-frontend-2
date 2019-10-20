@@ -26,6 +26,8 @@ export default function({ history }) {
   const handleChange = e => {
     const { name, value } = _.get(e, 'target', {})
 
+    console.log(name, value)
+
     setFormValues({ ...formValues, [name]: value })
   }
 
@@ -44,6 +46,9 @@ export default function({ history }) {
 
     try {
       await addUser(data)
+
+      window.alert('Usuário criado com sucesso!')
+      history.push('/login')
     } catch (e) {
       const { message, errors } = _.get(e, 'response.data', {})
 
@@ -133,6 +138,7 @@ export default function({ history }) {
                           type="radio"
                           name="usertype"
                           value="C"
+                          checked={formValues.usertype === 'C'}
                           onChange={handleChange}
                         />
                         Cuidador
@@ -141,6 +147,7 @@ export default function({ history }) {
                           type="radio"
                           name="usertype"
                           value="A"
+                          checked={formValues.usertype === 'A'}
                           onChange={handleChange}
                         />
                         Administrador
