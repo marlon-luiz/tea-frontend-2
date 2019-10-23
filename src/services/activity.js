@@ -30,10 +30,17 @@ const deleteActivity = async id => {
   return response.data
 }
 
+const concludeActivity = async id => {
+  const response = await api.put(`activities/${id}/status`)
+
+  return response.data
+}
+
 export {
   getActivities,
   findActivity,
   addActivity,
   updateActivity,
-  deleteActivity
+  deleteActivity,
+  concludeActivity
 }

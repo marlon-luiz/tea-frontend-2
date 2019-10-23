@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import {
   faCalendarAlt,
+  faCheck,
   faPencilAlt,
   faPlus,
   faSignOutAlt,
@@ -19,6 +20,7 @@ import App from './App'
 library.add(
   far,
   faCalendarAlt,
+  faCheck,
   faPencilAlt,
   faPlus,
   faSignOutAlt,

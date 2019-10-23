@@ -55,14 +55,16 @@ export default function({ location: { state } }) {
         </Grid>
       </Row>
 
-      <Button
-        to={{
-          pathname: '/activities/add',
-          state: {
-            autistId
-          }
-        }}
-      />
+      {window.user.type === 'A' && (
+        <Button
+          to={{
+            pathname: '/activities/add',
+            state: {
+              autistId
+            }
+          }}
+        />
+      )}
     </>
   )
 }

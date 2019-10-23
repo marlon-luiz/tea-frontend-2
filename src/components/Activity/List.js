@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 
-import { getActivities, deleteActivity } from '../../services/activity'
+import {
+  getActivities,
+  deleteActivity,
+  concludeActivity
+} from '../../services/activity'
 
 import List from '../../templates/List'
 import IconButton from '../../templates/IconButton'
@@ -34,6 +38,18 @@ export default function({ autistId, report }) {
     }
   }
 
+  const handeConclude = async activityId => {
+    if (window.confirm('Tem certeza que deseja concluir esta atividade?')) {
+      await concludeActivity(activityId)
+
+      if (autistId) {
+        const data = await getActivities(autistId)
+
+        setActivities(data)
+      }
+    }
+  }
+
   return (
     <List centerColumns={[4, 5, 6]}>
       <thead>
@@ -49,26 +65,41 @@ export default function({ autistId, report }) {
       <tbody>
         {_.map(activities, activity => (
           <tr key={activity.id}>
-            {!report && (
-              <td>
-                <IconButton
-                  link
-                  success
-                  icon="pencil-alt"
-                  to={`/activities/${activity.id}`}
-                />
-                <IconButton
-                  error
-                  icon="trash"
-                  onClick={async () => await handleDelete(activity.id)}
-                />
-              </td>
-            )}
+            {!report &&
+              (window.user.type === 'A' ? (
+                <td>
+                  {!activity.isConcluded && (
+                    <>
+                      <IconButton
+                        link
+                        success
+                        icon="pencil-alt"
+                        to={`/activities/${activity.id}`}
+                      />
+                      <IconButton
+                        error
+                        icon="trash"
+                        onClick={async () => await handleDelete(activity.id)}
+                      />
+                    </>
+                  )}
+                </td>
+              ) : (
+                <td>
+                  {!activity.isConcluded && (
+                    <IconButton
+                      success
+                      icon="check"
+                      onClick={async () => await handeConclude(activity.id)}
+                    />
+                  )}
+                </td>
+              ))}
             <td>{activity.title}</td>
             <td>{activity.description}</td>
             <td>{moment(activity.start).format('DD/MM HH:mm')}</td>
             <td>{moment(activity.end).format('DD/MM HH:mm')}</td>
-            <td>Pendente</td>
+            <td>{activity.isConcluded ? 'Concluído' : 'Pendente'}</td>
           </tr>
         ))}
       </tbody>

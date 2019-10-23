@@ -12,7 +12,7 @@ import Row from '../templates/Row'
 
 export default ({ history }) => (
   <Container>
-    <Navigation />
+    {window.user.type === 'A' && <Navigation />}
     <Header history={history} />
     <main>
       <Grid>
